@@ -210,8 +210,8 @@ Polymer({
   open: function() {
     this._resetComponent();
     try {
-      this._setConnection(new WebSocket(this.url));
       this._setState(0);
+      this._setConnection(new WebSocket(this.url));
       this._attachListeners();
     } catch (e) {
       this.fire('error', {
@@ -304,9 +304,11 @@ Polymer({
    * If required it will set up reconnect algorithm.
    */
   _onClose: function() {
+    var lastState = this.state;
     this._setState(3);
     this.fire('disconnected');
-    if (!this.manualClose) {
+    // Do not reconnect it here wasn't any connection made.
+    if (!this.manualClose && lastState !== 0) {
       this._setRetrying(true);
       this._retry();
     }
