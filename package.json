@@ -1,6 +1,6 @@
 {
   "name": "web-socket",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A we-socket element for Polymer.",
   "author": "Pawel Psztyc, The ARC team <jarrodek@gmail.com>",
   "scripts": {

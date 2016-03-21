@@ -1,6 +1,6 @@
 {
   "name": "web-socket",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "LICENSE.txt",
   "description": "A websocket element for Polymer.",
   "authors": [

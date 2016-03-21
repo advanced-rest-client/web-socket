@@ -1,3 +1,4 @@
+(function() {
 'use strict';
 
 Polymer({
@@ -345,3 +346,4 @@ Polymer({
     }, timeout);
   }
 });
+})();
