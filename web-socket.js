@@ -109,6 +109,11 @@ Polymer({
       type: Object,
       readOnly: true
     },
+    // If true it will not autoreconnect after connection lost.
+    noRetry: {
+      type: Boolean,
+      value: false
+    },
     /**
      * A handler for open event
      *
@@ -184,7 +189,8 @@ Polymer({
     }
   },
 
-  listeners: [
+  observers: [
+    '_noRetryChanged(noRetry)',
     '_connectionDataChanged(url, auto)',
     '_messageChanged(message, auto)'
   ],
@@ -308,7 +314,10 @@ Polymer({
     var lastState = this.state;
     this._setState(3);
     this.fire('disconnected');
-    // Do not reconnect it here wasn't any connection made.
+    if (this.noRetry) {
+      return;
+    }
+    // Do not reconnect it there wasn't connection made.
     if (!this.manualClose && lastState !== 0) {
       this._setRetrying(true);
       this._retry();
@@ -344,6 +353,15 @@ Polymer({
       this._reconnectTimer = null;
       this.open();
     }, timeout);
+  },
+
+  _noRetryChanged: function(noRetry) {
+    if (noRetry && this._reconnectTimer) {
+      window.clearTimeout(this._reconnectTimer);
+      this._reconnectTimer = null;
+      this._setRetrying(false);
+      this._retryCounter = 0;
+    }
   }
 });
 })();
