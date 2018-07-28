@@ -1,3 +1,13 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/advanced-rest-client/web-socket/compare/1.0.5...2.0.0) (2018-07-28)
+
+
+### Update
+
+* Updated docs ([c30bdde0f0f5dbbcc57b6467c84303344e94f384](https://github.com/advanced-rest-client/web-socket/commit/c30bdde0f0f5dbbcc57b6467c84303344e94f384))
+
+
+
 <a name="1.0.6"></a>
 ## [1.0.6](https://github.com/advanced-rest-client/web-socket/compare/1.0.5...v1.0.6) (2016-09-29)
 
