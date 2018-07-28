@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node test/server.js",
     "lint": "polymer lint web-socket.html",
-    "test": "exit(0)",
+    "test": "exit 0",
     "update-types": "gen-typescript-declarations --deleteExisting --outDir ."
   },
   "repository": {
