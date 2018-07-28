@@ -12,8 +12,11 @@ addons:
     packages:
       - google-chrome-stable
 script:
-  - npm start
-  - xvfb-run polymer test --plugin local
+- |
+  npm start &
+  SERVER_PID=$!
+- xvfb-run polymer test --plugin local
+- kill -9 $SERVER_PID
 cache:
   directories:
     - node_modules
