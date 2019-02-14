@@ -22,7 +22,7 @@
   },
   "private": false,
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.1.1",
+    "@polymer/gen-typescript-declarations": "^1.6.1",
     "ws": "^6.0.0"
   }
 }
