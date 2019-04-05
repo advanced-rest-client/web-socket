@@ -1,6 +1,6 @@
-<!--
+/**
 @license
-Copyright 2018 The Advanced REST client authors
+Copyright 2018 The Advanced REST client authors <arc@mulesoft.com>
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
 the License at
@@ -10,9 +10,8 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
--->
-<link rel="import" href="../polymer/polymer-element.html">
-<script>
+*/
+import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
 /**
  * The `web-socket` is an element to make a connection to the socket
  * using web sockets API.
@@ -34,8 +33,7 @@ the License.
  * @demo demo/index.html
  * @memberof LogicElements
  */
-class WebSocketComponent extends Polymer.Element {
-  static get is() { return 'web-socket'; }
+class WebSocketComponent extends PolymerElement {
   static get properties() {
     return {
       /**
@@ -144,14 +142,12 @@ class WebSocketComponent extends Polymer.Element {
       }
     };
   }
-
   static get observers() {
     return [
       '_connectionDataChanged(url, auto)',
       '_messageChanged(message, auto)'
     ];
   }
-
   constructor() {
     super();
     this._onOpen = this._onOpen.bind(this);
@@ -159,16 +155,17 @@ class WebSocketComponent extends Polymer.Element {
     this._onMessage = this._onMessage.bind(this);
     this._onError = this._onError.bind(this);
   }
-
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.state === 1) {
       this.close();
     }
   }
-
   /**
    * A handler for `url` attribute changed.
+   *
+   * @param {String} url
+   * @param {Boolean} auto
    */
   _connectionDataChanged(url, auto) {
     if (url && auto) {
@@ -177,6 +174,8 @@ class WebSocketComponent extends Polymer.Element {
   }
   /**
    * A handler for `message` attribute changed.
+   * @param {String} message
+   * @param {Boolean} auto
    */
   _messageChanged(message, auto) {
     if (message && auto) {
@@ -214,7 +213,6 @@ class WebSocketComponent extends Polymer.Element {
       this._reconnectTimer = undefined;
     }
   }
-
   _detachListeners() {
     if (!this.connection) {
       return;
@@ -224,7 +222,6 @@ class WebSocketComponent extends Polymer.Element {
     this.connection.removeEventListener('message', this._onMessage);
     this.connection.removeEventListener('error', this._onError);
   }
-
   _attachListeners() {
     if (!this.connection) {
       return;
@@ -313,6 +310,7 @@ class WebSocketComponent extends Polymer.Element {
   /**
    * A handler for `message` event.
    * It will fire message event.
+   * @param {Event} e
    */
   _onMessage(e) {
     this.dispatchEvent(new CustomEvent('message', {
@@ -324,6 +322,7 @@ class WebSocketComponent extends Polymer.Element {
   }
   /**
    * A handler for `error` event.
+   * @param {Event} e
    */
   _onError(e) {
     this.dispatchEvent(new CustomEvent('error', {
@@ -333,7 +332,6 @@ class WebSocketComponent extends Polymer.Element {
       }
     }));
   }
-
   _retry() {
     let timeout = this.retryingTime || 1;
     timeout *= 1000;
@@ -348,7 +346,6 @@ class WebSocketComponent extends Polymer.Element {
       this.open();
     }, timeout);
   }
-
   _noRetryChanged(noRetry) {
     if (noRetry && this._reconnectTimer) {
       window.clearTimeout(this._reconnectTimer);
@@ -382,5 +379,4 @@ class WebSocketComponent extends Polymer.Element {
    * @param {Error} error.
    */
 }
-window.customElements.define(WebSocketComponent.is, WebSocketComponent);
-</script>
+window.customElements.define('web-socket', WebSocketComponent);

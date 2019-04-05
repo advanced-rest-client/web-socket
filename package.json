@@ -1,28 +1,53 @@
 {
-  "name": "@advanced-rest-client/web-socket",
-  "version": "2.0.0",
-  "license": "Apache-2.0",
   "description": "A we-socket element for Polymer.",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "web-socket",
+    "socket"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/advanced-rest-client/web-socket.git"
+  },
+  "homepage": "https://github.com/advanced-rest-client/web-socket",
+  "name": "@advanced-rest-client/web-socket",
+  "version": "3.0.0-preview.1",
+  "license": "Apache-2.0",
   "authors": [
     "The Advanced REST Client authors",
     "Pawel Psztyc <jarrodek@gmail.com>"
   ],
   "scripts": {
     "start": "node test/server.js",
-    "lint": "polymer lint web-socket.html",
+    "lint": "polymer lint web-socket.js",
     "test": "exit 0",
     "update-types": "gen-typescript-declarations --deleteExisting --outDir ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/advanced-rest-client/web-socket.git"
   },
   "bugs": {
     "url": "https://github.com/advanced-rest-client/web-socket/issues"
   },
-  "private": false,
   "devDependencies": {
     "@polymer/gen-typescript-declarations": "^1.6.1",
-    "ws": "^6.0.0"
+    "ws": "^6.0.0",
+    "@polymer/iron-component-page": "^4.0.0",
+    "@polymer/iron-demo-helpers": "^3.0.0",
+    "@polymer/iron-test-helpers": "^3.0.0",
+    "@polymer/paper-input": "^3.0.0",
+    "@polymer/paper-button": "^3.0.0",
+    "@webcomponents/webcomponentsjs": "^2.0.0",
+    "@polymer/test-fixture": "^4.0.2",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "sinon": "^7.2.3",
+    "wct-mocha": "^1.0.0"
+  },
+  "main": "web-socket.js",
+  "contributors": [
+    "The Advanced REST Client authors",
+    "Pawel Psztyc <jarrodek@gmail.com>"
+  ],
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0"
   }
 }

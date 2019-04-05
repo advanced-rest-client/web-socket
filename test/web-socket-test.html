@@ -4,9 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
   <title>web-socket test</title>
-  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
-  <script src="../../web-component-tester/browser.js"></script>
-  <link rel="import" href="../web-socket.html">
+
+  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../../@polymer/test-fixture/test-fixture.js"></script>
+  <script src="../../../mocha/mocha.js"></script>
+  <script src="../../../chai/chai.js"></script>
+  <script src="../../../wct-mocha/wct-mocha.js"></script>
+
+  <script src="../web-socket.js"></script>
 </head>
 <body>
   <test-fixture id="Basic">
@@ -15,7 +20,8 @@
     </template>
   </test-fixture>
 
-  <script>
+  <script type="module">
+  import '../web-socket.js';
   suite('web-socket', () => {
     let element;
     setup(() => {
