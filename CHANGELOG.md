@@ -51,3 +51,17 @@
 
 
 
+## [3.0.1](https://github.com/advanced-rest-client/web-socket/compare/1.0.5...3.0.1) (2019-07-24)
+
+
+### Bug Fixes
+
+* removing `include` from demo styles ([3df4232](https://github.com/advanced-rest-client/web-socket/commit/3df4232))
+
+
+### Features
+
+* adding `onretrying` event ([a032811](https://github.com/advanced-rest-client/web-socket/commit/a032811))
+
+
+
