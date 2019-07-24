@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/web-socket",
   "description": "A web component wrapper for web socket.",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "Apache-2.0",
   "main": "web-socket.js",
   "keywords": [
