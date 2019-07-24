@@ -1,8 +1,11 @@
 language: node_js
 node_js: stable
 sudo: required
-cache:
-  directories:
-    - node_modules
-after_success:
-  - node tasks/ci.js
+addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+script:
+- npm test

@@ -1,28 +1,76 @@
 {
   "name": "@advanced-rest-client/web-socket",
-  "version": "2.0.0",
+  "description": "A web component wrapper for web socket.",
+  "version": "3.0.0",
   "license": "Apache-2.0",
-  "description": "A we-socket element for Polymer.",
+  "main": "web-socket.js",
+  "keywords": [
+    "web-components",
+    "web-socket",
+    "arc-components",
+    "advanced-rest-client",
+    "socket"
+  ],
   "authors": [
     "The Advanced REST Client authors",
     "Pawel Psztyc <jarrodek@gmail.com>"
   ],
-  "scripts": {
-    "start": "node test/server.js",
-    "lint": "polymer lint web-socket.html",
-    "test": "exit 0",
-    "update-types": "gen-typescript-declarations --deleteExisting --outDir ."
-  },
+  "contributors": [
+    "The Advanced REST Client authors",
+    "Pawel Psztyc <jarrodek@gmail.com>"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/advanced-rest-client/web-socket.git"
   },
   "bugs": {
-    "url": "https://github.com/advanced-rest-client/web-socket/issues"
+    "url": "https://github.com/advanced-rest-client/web-socket/issues",
+    "email": "arc@mulesoft.com"
   },
-  "private": false,
+  "dependencies": {
+    "lit-element": "^2.0.1"
+  },
   "devDependencies": {
-    "@polymer/gen-typescript-declarations": "^1.6.1",
-    "ws": "^6.0.0"
+    "@advanced-rest-client/a11y-suite": "^1.0.0",
+    "@advanced-rest-client/arc-demo-helper": "^1.0.3",
+    "@advanced-rest-client/eslint-config": "^1.0.6",
+    "@advanced-rest-client/testing-karma-sl": "^1.0.2",
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^7.0.0",
+    "@open-wc/prettier-config": "^0.1.0",
+    "@open-wc/testing": "^0.11.1",
+    "@open-wc/testing-karma": "^2.0.6",
+    "@polymer/gen-typescript-declarations": "^1.6.2",
+    "@polymer/paper-input": "^3.0.0",
+    "@polymer/paper-button": "^3.0.0",
+    "es-dev-server": "^1.5.0",
+    "husky": "^1.0.0",
+    "lint-staged": "^8.0.0",
+    "webpack-merge": "^4.1.5",
+    "web-animations-js": "^2.3.1",
+    "ws": "^6.0.0",
+    "sinon": "^7.2.3"
+  },
+  "scripts": {
+    "test": "karma start --coverage",
+    "update-types": "gen-typescript-declarations --deleteExisting --outDir .",
+    "start": "es-dev-server --app-index demo/index.html --node-resolve --open --watch",
+    "start:compatibility": "es-dev-server --app-index demo/index.html --compatibility all --node-resolve --open --watch",
+    "lint:eslint": "eslint --ext .js,.html .",
+    "format:eslint": "eslint --ext .js,.html . --fix",
+    "lint:prettier": "prettier \"**/*.js\" --list-different || (echo '↑↑ these files are not prettier formatted ↑↑' && exit 1)",
+    "format:prettier": "prettier \"**/*.js\" --write",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "format": "npm run format:eslint && npm run format:prettier",
+    "test:watch": "karma start --auto-watch=true --single-run=false",
+    "test:legacy": "karma start --legacy --coverage",
+    "test:legacy:watch": "karma start --legacy --auto-watch=true --single-run=false",
+    "test:sl": "karma start karma.sl.config.js --legacy --coverage"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
