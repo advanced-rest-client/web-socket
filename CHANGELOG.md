@@ -47,3 +47,7 @@
 
 
 
+# [3.0.0](https://github.com/advanced-rest-client/web-socket/compare/1.0.5...3.0.0) (2019-07-24)
+
+
+
