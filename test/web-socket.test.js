@@ -387,6 +387,48 @@ describe('<web-socket>', () => {
     });
   });
 
+  describe('onretrying', () => {
+    let element;
+    beforeEach(async () => {
+      element = await basicFixture();
+    });
+
+    it('Getter returns previously registered handler', () => {
+      assert.isUndefined(element.onretrying);
+      const f = () => {};
+      element.onretrying = f;
+      assert.isTrue(element.onretrying === f);
+    });
+
+    it('Calls registered function', () => {
+      let called = false;
+      const f = () => {
+        called = true;
+      };
+      element.onretrying = f;
+      element._retrying = true;
+      element.onretrying = null;
+      assert.isTrue(called);
+    });
+
+    it('Unregisteres old function', () => {
+      let called1 = false;
+      let called2 = false;
+      const f1 = () => {
+        called1 = true;
+      };
+      const f2 = () => {
+        called2 = true;
+      };
+      element.onretrying = f1;
+      element.onretrying = f2;
+      element._retrying = true;
+      element.onretrying = null;
+      assert.isFalse(called1);
+      assert.isTrue(called2);
+    });
+  });
+
   describe('Setters', () => {
     let element;
     beforeEach(async () => {

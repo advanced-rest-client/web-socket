@@ -107,6 +107,19 @@ class WebSocketComponent extends LitElement {
   get retrying() {
     return this._retrying;
   }
+
+  get _retrying() {
+    return this.__retrying;
+  }
+
+  set _retrying(value) {
+    this.__retrying = value;
+    this.dispatchEvent(new CustomEvent('retrying-changed', {
+      detail: {
+        value
+      }
+    }));
+  }
   /**
    * @retuern {WebSocket|undefined} A pointer to the current connection.
    */
@@ -204,6 +217,20 @@ class WebSocketComponent extends LitElement {
    */
   set ondisconnected(value) {
     this._registerCallback('disconnected', value);
+  }
+  /**
+   * @return {Function} Previously registered handler for `disconnected` event
+   */
+  get onretrying() {
+    return this['_onretrying-changed'];
+  }
+  /**
+   * Registers a callback function for `disconnected` event
+   * @param {Function} value A callback to register. Pass `null` or `undefined`
+   * to clear the listener.
+   */
+  set onretrying(value) {
+    this._registerCallback('retrying-changed', value);
   }
   /**
    * @return {Function} Previously registered handler for `message` event
