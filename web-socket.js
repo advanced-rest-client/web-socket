@@ -11,29 +11,16 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
+import { LitElement } from 'lit-element';
 /**
  * The `web-socket` is an element to make a connection to the socket
  * using web sockets API.
  *
- * Example:
- *
- * ```html
- * <web-socket
- *  message="[[myMessage]]"
- *  retrying="{{isRetrying}}"
- *  retryingTime="{{timeToRetry}}"
- *  on-message="_messageReceived"
- *  on-disconnected="_onDisconnected"
- *  on-connected=""></web-socket>
- * ```
- *
  * @customElement
- * @polymer
  * @demo demo/index.html
  * @memberof LogicElements
  */
-class WebSocketComponent extends PolymerElement {
+class WebSocketComponent extends LitElement {
   static get properties() {
     return {
       /**
@@ -41,7 +28,7 @@ class WebSocketComponent extends PolymerElement {
        *
        * @type {String}
        */
-      url: String,
+      url: { type: String },
       /**
        * A message to be send via socket.
        * It can be any type supported by WebSockets web interface:
@@ -49,31 +36,11 @@ class WebSocketComponent extends PolymerElement {
        *
        * @type {Any}
        */
-      message: Object,
-      /**
-       * Current state of the socket, where:
-       * -1 - default state, disconnected,
-       * 0 - The connection is not yet open.
-       * 1 - The connection is open and ready to communicate.
-       * 2 - The connection is in the process of closing.
-       * 3 - The connection is closed or couldn't be opened.
-       */
-      state: {
-        type: Number,
-        value: -1,
-        notify: true,
-        readOnly: true
-      },
-      /**
-       * If true element is retrying the connection to the server after
-       * it has been lost.
-       */
-      retrying: {
-        type: Boolean,
-        value: false,
-        notify: true,
-        readOnly: true
-      },
+      message: { type: Object },
+
+      _state: { type: Number },
+
+      _retrying: { type: Boolean },
       /**
        * An initial time for retrying the request in seconds.
        * The element will attempt to reconnect to the server after set time
@@ -89,46 +56,26 @@ class WebSocketComponent extends PolymerElement {
        * - 32 seconds
        * - an so on
        */
-      retryingTime: {
-        type: Number,
-        value: 1
-      },
+      retryingTime: { type: Number },
       /**
        * If true the element will attempt to connect after `url` change.
        * If conncetion was already established with previous `url` it will
        * be closed first.
        */
-      auto: Boolean,
+      auto: { type: Boolean },
       /**
        * A handler to the current connection.
        *
        * @type {WebSocket}
        */
-      connection: {
-        type: Object,
-        readOnly: true
-      },
+      _connection: { type: Object },
       // When set it does not autoreconnect after connection lost.
-      noRetry: {
-        type: Boolean,
-        observer: '_noRetryChanged'
-      },
+      noRetry: { type: Boolean },
       /**
        * True when user called `close` function manually.
        * When is set to `false` the element will attempt to reconnect to the server.
        */
-      manualClose: {
-        type: Boolean,
-        value: false,
-        readOnly: true
-      },
-      /**
-       * A current reconnect timeout in miliseconds
-       */
-      reconnectTimeout: {
-        type: Number,
-        readOnly: true
-      },
+      _manualClose: { type: Boolean },
       /**
        * Window timeout ID for reconnect timer.
        */
@@ -142,42 +89,209 @@ class WebSocketComponent extends PolymerElement {
       }
     };
   }
-  static get observers() {
-    return [
-      '_connectionDataChanged(url, auto)',
-      '_messageChanged(message, auto)'
-    ];
+  /**
+   * @return {Number} Current state of the socket, where:
+   * -1 - default state, disconnected,
+   * 0 - The connection is not yet open.
+   * 1 - The connection is open and ready to communicate.
+   * 2 - The connection is in the process of closing.
+   * 3 - The connection is closed or couldn't be opened.
+   */
+  get state() {
+    return this._state;
   }
+  /**
+   * @return {Boolean} If true element is retrying the connection to the server after
+   * it has been lost.
+   */
+  get retrying() {
+    return this._retrying;
+  }
+  /**
+   * @retuern {WebSocket|undefined} A pointer to the current connection.
+   */
+  get connection() {
+    return this._connection;
+  }
+  /**
+   * @return {Boolean} True when user called `close` function manually.
+   * When is set to `false` the element will attempt to reconnect to the server.
+   */
+  get manualClose() {
+    return this._manualClose;
+  }
+
+  get noRetry() {
+    return this._noRetry;
+  }
+  /**
+   * When set it does not autoreconnect after connection lost.
+   * @param {Boolean} value
+   */
+  set noRetry(value) {
+    const old = this._noRetry;
+    if (old === value) {
+      return;
+    }
+    this._noRetry = value;
+    this._noRetryChanged(value);
+  }
+
+  get url() {
+    return this._url;
+  }
+
+  set url(value) {
+    const old = this._url;
+    if (old === value) {
+      return;
+    }
+    this._url = value;
+    this._connectionDataChanged();
+  }
+
+  get auto() {
+    return this._auto;
+  }
+
+  set auto(value) {
+    const old = this._auto;
+    if (old === value) {
+      return;
+    }
+    this._auto = value;
+    this._connectionDataChanged();
+    this._messageChanged();
+  }
+
+  get message() {
+    return this._message;
+  }
+
+  set message(value) {
+    const old = this._message;
+    if (old === value) {
+      return;
+    }
+    this._message = value;
+    this._messageChanged();
+  }
+
+  /**
+   * @return {Function} Previously registered handler for `connected` event
+   */
+  get onconnected() {
+    return this._onconnected;
+  }
+  /**
+   * Registers a callback function for `connected` event
+   * @param {Function} value A callback to register. Pass `null` or `undefined`
+   * to clear the listener.
+   */
+  set onconnected(value) {
+    this._registerCallback('connected', value);
+  }
+  /**
+   * @return {Function} Previously registered handler for `disconnected` event
+   */
+  get ondisconnected() {
+    return this._ondisconnected;
+  }
+  /**
+   * Registers a callback function for `disconnected` event
+   * @param {Function} value A callback to register. Pass `null` or `undefined`
+   * to clear the listener.
+   */
+  set ondisconnected(value) {
+    this._registerCallback('disconnected', value);
+  }
+  /**
+   * @return {Function} Previously registered handler for `message` event
+   */
+  get onmessage() {
+    return this._onmessage;
+  }
+  /**
+   * Registers a callback function for `message` event
+   * @param {Function} value A callback to register. Pass `null` or `undefined`
+   * to clear the listener.
+   */
+  set onmessage(value) {
+    this._registerCallback('message', value);
+  }
+  /**
+   * @return {Function} Previously registered handler for `error` event
+   */
+  get onerror() {
+    return this._onerror;
+  }
+  /**
+   * Registers a callback function for `error` event
+   * @param {Function} value A callback to register. Pass `null` or `undefined`
+   * to clear the listener.
+   */
+  set onerror(value) {
+    this._registerCallback('error', value);
+  }
+
   constructor() {
     super();
     this._onOpen = this._onOpen.bind(this);
     this._onClose = this._onClose.bind(this);
     this._onMessage = this._onMessage.bind(this);
     this._onError = this._onError.bind(this);
+
+    this._state = -1;
+    this._retrying = false;
+    this.retryingTime = 1;
+    this._manualClose = false;
   }
+
+  connectedCallback() {
+    if (super.connectedCallback) {
+      super.connectedCallback();
+    }
+    if (!this.hasAttribute('aria-hidden')) {
+      this.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+
   disconnectedCallback() {
-    super.disconnectedCallback();
-    if (this.state === 1) {
+    if (super.disconnectedCallback) {
+      super.disconnectedCallback();
+    }
+    if (this._state === 1) {
       this.close();
     }
   }
+
+  _registerCallback(eventType, value) {
+    const key = `_on${eventType}`;
+    if (this[key]) {
+      this.removeEventListener(eventType, this[key]);
+    }
+    if (typeof value !== 'function') {
+      this[key] = null;
+      return;
+    }
+    this[key] = value;
+    this.addEventListener(eventType, value);
+  }
   /**
-   * A handler for `url` attribute changed.
-   *
-   * @param {String} url
-   * @param {Boolean} auto
+   * A handler for `url` and `auto` attribute changed.
    */
-  _connectionDataChanged(url, auto) {
+  _connectionDataChanged() {
+    const { url, auto } = this;
     if (url && auto) {
       this.open();
     }
   }
   /**
-   * A handler for `message` attribute changed.
-   * @param {String} message
-   * @param {Boolean} auto
+   * A handler for `message` and `auto` attribute changed.
    */
-  _messageChanged(message, auto) {
+  _messageChanged() {
+    const { message, auto } = this;
     if (message && auto) {
       this.send();
     }
@@ -189,16 +303,11 @@ class WebSocketComponent extends PolymerElement {
   open() {
     this._resetComponent();
     try {
-      this._setState(0);
-      this._setConnection(new WebSocket(this.url));
+      this._state = 0;
+      this._connection = new WebSocket(this.url);
       this._attachListeners();
     } catch (e) {
-      this.dispatchEvent(new CustomEvent('error', {
-        composed: true,
-        detail: {
-          error: e
-        }
-      }));
+      this._onError(e);
     }
   }
   /**
@@ -207,12 +316,13 @@ class WebSocketComponent extends PolymerElement {
   _resetComponent() {
     this._detachListeners();
     this.close();
-    this._setManualClose(false);
+    this._manualClose = false;
     if (this._reconnectTimer) {
       window.clearTimeout(this._reconnectTimer);
       this._reconnectTimer = undefined;
     }
   }
+
   _detachListeners() {
     if (!this.connection) {
       return;
@@ -222,6 +332,7 @@ class WebSocketComponent extends PolymerElement {
     this.connection.removeEventListener('message', this._onMessage);
     this.connection.removeEventListener('error', this._onError);
   }
+
   _attachListeners() {
     if (!this.connection) {
       return;
@@ -243,8 +354,8 @@ class WebSocketComponent extends PolymerElement {
     if (!this.connection) {
       return;
     }
-    this._setManualClose(true);
-    this._setState(2);
+    this._manualClose = true;
+    this._state = 2;
     if (code === 1000 || (code >= 3000 && code < 5000)) {
       this.connection.close(code, message);
     } else {
@@ -256,23 +367,14 @@ class WebSocketComponent extends PolymerElement {
    * If `auto` attribute is present the message will be send wight after new `message` is set.
    */
   send() {
-    if (this.state !== 1) {
-      this.dispatchEvent(new CustomEvent('error', {
-        composed: true,
-        detail: {
-          error: new Error('Socket is not connected')
-        }
-      }));
+    if (this._state !== 1) {
+      this._onError(new Error('Socket is not connected'));
+      return;
     }
     try {
       this.connection.send(this.message);
     } catch (e) {
-      this.dispatchEvent(new CustomEvent('error', {
-        composed: true,
-        detail: {
-          error: e
-        }
-      }));
+      this._onError(e);
     }
   }
   /**
@@ -280,8 +382,8 @@ class WebSocketComponent extends PolymerElement {
    * It will set current state to 1 and fire `connected` event.
    */
   _onOpen() {
-    this._setState(1);
-    this._setRetrying(false);
+    this._state = 1;
+    this._retrying = false;
     this._retryCounter = 0;
     this.dispatchEvent(new CustomEvent('connected', {
       composed: true
@@ -294,7 +396,7 @@ class WebSocketComponent extends PolymerElement {
    */
   _onClose() {
     const lastState = this.state;
-    this._setState(3);
+    this._state = 3;
     this.dispatchEvent(new CustomEvent('disconnected', {
       composed: true
     }));
@@ -303,7 +405,7 @@ class WebSocketComponent extends PolymerElement {
     }
     // Do not reconnect it there wasn't connection made.
     if (!this.manualClose && lastState !== 0) {
-      this._setRetrying(true);
+      this._retrying = true;
       this._retry();
     }
   }
@@ -332,6 +434,7 @@ class WebSocketComponent extends PolymerElement {
       }
     }));
   }
+
   _retry() {
     let timeout = this.retryingTime || 1;
     timeout *= 1000;
@@ -346,11 +449,12 @@ class WebSocketComponent extends PolymerElement {
       this.open();
     }, timeout);
   }
+
   _noRetryChanged(noRetry) {
     if (noRetry && this._reconnectTimer) {
       window.clearTimeout(this._reconnectTimer);
       this._reconnectTimer = null;
-      this._setRetrying(false);
+      this._retrying = false;
       this._retryCounter = 0;
     }
   }

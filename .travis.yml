@@ -1,4 +1,11 @@
 language: node_js
 node_js: stable
 sudo: required
-before_script: npm install -g polymer-cli @advanced-rest-client/wct-istanbub
+addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+script:
+- npm test
