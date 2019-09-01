@@ -1,6 +1,5 @@
 import { fixture, assert } from '@open-wc/testing';
-import sinon from 'sinon/pkg/sinon-esm.js';
-import { a11ySuite } from '@advanced-rest-client/a11y-suite/index.js';
+import * as sinon from 'sinon/pkg/sinon-esm.js';
 import '../web-socket.js';
 
 describe('<web-socket>', () => {
@@ -499,7 +498,8 @@ describe('<web-socket>', () => {
 
   describe('a11y', () => {
     it('Passes a11y test', async () => {
-      await a11ySuite('Normal state', '<web-socket url="wss://echo.websocket.org"></web-socket>');
+      const element = await basicFixture();
+      await assert.isAccessible(element);
     });
 
     it('sets aria-hidden', async () => {
