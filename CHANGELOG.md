@@ -125,3 +125,28 @@
  [aa790a3](https://github.com/advanced-rest-client/web-socket/commit/aa790a34c88741e35e82f16ad7b20fa70445adf4) by jarrodek
 
 
+<a name="3.0.2"></a>
+## [3.0.2](https://github.com/advanced-rest-client/web-socket/compare/3.0.1...3.0.2) (2020-03-31)
+
+### Build
+
+* bumping version [e816bdf](https://github.com/advanced-rest-client/web-socket/commit/e816bdf8c870fa80910a68e0f9fdde166706b3bc) by Pawel Psztyc
+
+
+### Continuous integration
+
+* fixed Travis configuration [22e8c34](https://github.com/advanced-rest-client/web-socket/commit/22e8c3466c683821d9521d6a1e5e541f34c0f3a0) by Pawel Psztyc
+
+
+### Update
+
+* upgrading dependencies [a3510f9](https://github.com/advanced-rest-client/web-socket/commit/a3510f9084033c01bfe8807a9bdf76931fcfc2aa) by Pawel Psztyc
+* [ci skip] automated merge master->stage. syncing main branches [e5e5434](https://github.com/advanced-rest-client/web-socket/commit/e5e5434049c6da98e73fbe904179a518e48eee29) by Ci agent
+* fixing npm audit by upgrading dev dependencies [e574f3e](https://github.com/advanced-rest-client/web-socket/commit/e574f3e918385f566cecdba66e66b5daca2d3ec6) by Pawel
+
+
+### Testing
+
+* upgrading SL configuration [28e1e0c](https://github.com/advanced-rest-client/web-socket/commit/28e1e0cadbb31c90087ff487a84e52022444e7a7) by Pawel Psztyc
+
+
