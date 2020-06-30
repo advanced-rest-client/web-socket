@@ -11,6 +11,4 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import { WebSocketElement } from './src/WebSocketElement.js';
-
-window.customElements.define('web-socket', WebSocketElement);
+export { WebSocketElement } from './src/WebSocketElement';

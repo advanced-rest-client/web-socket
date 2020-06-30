@@ -1,6 +1,6 @@
 [![Published on NPM](https://img.shields.io/npm/v/@advanced-rest-client/web-socket.svg)](https://www.npmjs.com/package/@advanced-rest-client/web-socket)
 
-[![Build Status](https://travis-ci.org/advanced-rest-client/api-url-data-model.svg?branch=stage)](https://travis-ci.org/advanced-rest-client/web-socket)
+[![Build Status](https://travis-ci.com/advanced-rest-client/api-url-data-model.svg)](https://travis-ci.com/advanced-rest-client/web-socket)
 
 # web-socket
 
@@ -29,7 +29,7 @@ class SampleElement extends LitElement {
 customElements.define('sample-element', SampleElement);
 ```
 
-### Development
+## Development
 
 ```sh
 git clone https://github.com/advanced-rest-client/web-socket
@@ -47,8 +47,3 @@ npm start
 ```sh
 npm test
 ```
-
-
-### API components
-
-This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)

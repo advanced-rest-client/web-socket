@@ -4,7 +4,7 @@ const { slSettings } = require('@advanced-rest-client/testing-karma-sl');
 const createBaseConfig = require('./karma.conf.js');
 
 module.exports = (config) => {
-  const slConfig = merge(slSettings(config), {
+  const slConfig = merge(slSettings(), {
     sauceLabs: {
       testName: 'web-socket',
     },

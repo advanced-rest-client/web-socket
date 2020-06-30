@@ -1,18 +1,18 @@
 import { fixture, assert } from '@open-wc/testing';
-import * as sinon from 'sinon/pkg/sinon-esm.js';
+import * as sinon from 'sinon';
 import '../web-socket.js';
 
 describe('<web-socket>', () => {
   async function basicFixture() {
-    return (await fixture(`<web-socket url="wss://echo.websocket.org"></web-socket>`));
+    return (fixture(`<web-socket url="wss://echo.websocket.org"></web-socket>`));
   }
 
   async function autoFixture() {
-    return (await fixture(`<web-socket auto url="wss://echo.websocket.org"></web-socket>`));
+    return (fixture(`<web-socket auto url="wss://echo.websocket.org"></web-socket>`));
   }
 
   async function ariaHiddenFixture() {
-    return (await fixture(`<web-socket aria-hidden="test"></web-socket>`));
+    return (fixture(`<web-socket aria-hidden="test"></web-socket>`));
   }
 
   describe('Basics', () => {
