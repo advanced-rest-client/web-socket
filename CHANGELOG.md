@@ -150,3 +150,12 @@
 * upgrading SL configuration [28e1e0c](https://github.com/advanced-rest-client/web-socket/commit/28e1e0cadbb31c90087ff487a84e52022444e7a7) by Pawel Psztyc
 
 
+<a name="3.1.0"></a>
+## [3.1.0](https://github.com/advanced-rest-client/web-socket/compare/3.0.2...3.1.0) (2020-06-30)
+
+### Update
+
+* adding types declaration [3572f6d](https://github.com/advanced-rest-client/web-socket/commit/3572f6d51145f28837885ce4baa040913db62a9b) by Pawel
+* [ci skip] automated merge master->stage. syncing main branches [71a93fe](https://github.com/advanced-rest-client/web-socket/commit/71a93fe5979ed17d00f4ba8e3484b271d26b416d) by Ci agent
+
+
